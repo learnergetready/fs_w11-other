@@ -27,7 +27,6 @@ const LoginForm = ({ handleLogin, username, setUsername, password, setPassword }
       </div>
       <button type='submit' data-cy='login'>login</button>
     </form>
-    <p>testing...</p>
   </div>
 )
 

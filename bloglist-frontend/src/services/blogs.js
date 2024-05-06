@@ -1,6 +1,8 @@
 import axios from 'axios'
 
-const baseUrl = 'https://bloglist-for-cicd-fs-learnergit.fly.dev/api/kakkapakka'
+const baseUrl = import.meta.env.MODE === 'production'
+  ? 'https://bloglist-for-cicd-fs-learnergit.fly.dev/api/blogs'
+  : 'http://localhost:3001/api/blogs'
 
 let token = null
 

@@ -13,7 +13,8 @@
     "start": "NODE_ENV=production node index.js",
     "lint": "eslint .",
     "start:test": "NODE_ENV=test node index.js",
-    "test:e2e": "cd bloglist-frontend/ && npm run test:e2e"
+    "test:e2e": "cd bloglist-frontend/ && npm run test:e2e",
+    "deploy": "npm run build:ui && fly deploy"
   },
   "author": "Learner Getready",
   "license": "ISC",
