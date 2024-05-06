@@ -1,0 +1,30 @@
+# fly.toml app configuration file generated for bloglist-for-cicd-fs-learnergit on 2024-05-06T16:02:36+03:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'bloglist-for-cicd-fs-learnergit'
+primary_region = 'arn'
+
+[env]
+  BASE_URL = 'https://bloglist-for-cicd-fs-learnergit.fly.dev'
+  NODE_ENV = 'production'
+  PORT = '3001'
+
+[build]
+
+[http_service]
+  internal_port = 3001
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[processes]
+  app = 'node index.js'
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1

@@ -1,0 +1,4 @@
+.env
+bloglist-frontend
+node_modules
+mongo.js
