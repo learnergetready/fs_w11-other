@@ -7,7 +7,6 @@ app = 'bloglist-for-cicd-fs-learnergit'
 primary_region = 'arn'
 
 [env]
-  BASE_URL = 'https://bloglist-for-cicd-fs-learnergit.fly.dev'
   NODE_ENV = 'production'
   PORT = '3001'
 
