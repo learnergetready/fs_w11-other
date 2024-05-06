@@ -1,0 +1,76 @@
+name: Deployment pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize]
+
+jobs:
+  simple_deployment_pipeline:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 16
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+        with:
+          version: 0.2.9
+      - name: Install dependencies
+        run: npm install
+      - name: Check style
+        run: npm run eslint
+      - run: npm run build:ui
+      - name: unit test api
+        run: npm test
+      - name: unit test frontend
+        command: npm run test:frontend
+        start: npm run start-test
+        wait-on: http://localhost:3001
+      - name: e2e tests
+        uses: cypress-io/github-action@v5
+        with: 
+          command: npm run test:e2e
+          start: npm start-test
+          wait-on: http://localhost:3001
+      - name: deploy to fly.io
+        if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message), '#skip')}}
+        run: flyctl deploy --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      - name: Actions Status Discord Fail
+        uses: sarisia/actions-status-discord@c242b3a624337aa95f4727dd779a62f408c69e91
+        if: ${{ failure() }}
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          status: ${{ job.status }}
+          content: |
+            Hey <@1211681226826719236>! A pokédex build failed just now.
+            [Link to the commit](https://github.com/learnergetready/fs_w11-pokedex/commit/${{ github.sha }})
+  tag_release:
+    if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message), '#skip') }}
+    needs: [simple_deployment_pipeline]
+    runs-on: ubuntu-20.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: '0'
+      - name: Bump version and push tag
+        id: tagging
+        uses: anothrNick/github-tag-action@a2c70ae13a881faf2b4953baaa9e49731997ab36
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
+      - name: Actions Status Discord new version deployed and tagged
+        uses: sarisia/actions-status-discord@c242b3a624337aa95f4727dd779a62f408c69e91
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          status: ${{ job.status }}
+          content: |
+            Hey <@1211681226826719236>! A new version of Pokédex got deployed succesfully.
+            It was a `${{ steps.tagging.outputs.part }}` update to version `${{steps.tagging.outputs.new_tag}}`
+            [Link to the commit](https://github.com/learnergetready/fs_w11-pokedex/commit/${{ github.sha }})
