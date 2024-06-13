@@ -34,8 +34,6 @@ jobs:
         uses: cypress-io/github-action@v5
         with: 
           command: npm run test:e2e
-          start: npm run start:test
-          wait-on: http://localhost:3001
       - name: deploy to fly.io
         if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message), '#skip')}}
         run: flyctl deploy --remote-only
