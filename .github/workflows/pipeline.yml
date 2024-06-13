@@ -24,7 +24,7 @@ jobs:
         run: npm run lint
       - run: npm run build:ui
       - name: unit test api
-        run: npm test
+        run: npm run test:api
       - name: start test server
         run: |
           npm run start-test &&
@@ -49,7 +49,7 @@ jobs:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           status: ${{ job.status }}
           content: |
-            Hey <@1211681226826719236>! A pokédex build failed just now.
+            Hey <@1237058905708953711>! A Monorepo-program build failed just now.
             [Link to the commit](https://github.com/learnergetready/fs_w11-pokedex/commit/${{ github.sha }})
   tag_release:
     if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message), '#skip') }}
@@ -73,6 +73,6 @@ jobs:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           status: ${{ job.status }}
           content: |
-            Hey <@1211681226826719236>! A new version of Pokédex got deployed succesfully.
+            Hey <@1237058905708953711>! A new version of Monorepo-program got deployed succesfully.
             It was a `${{ steps.tagging.outputs.part }}` update to version `${{steps.tagging.outputs.new_tag}}`
             [Link to the commit](https://github.com/learnergetready/fs_w11-pokedex/commit/${{ github.sha }})
