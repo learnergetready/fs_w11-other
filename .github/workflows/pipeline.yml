@@ -26,7 +26,7 @@ jobs:
       - name: unit test api
         run: ə
           npm run start:test &
-          while ! echo exit | nc localost 3001; do sleep 10; done &&
+          while ! echo exit | nc localhost 3001; do sleep 10; done &&
           npm run test:api
       - name: unit test frontend
         run: |
