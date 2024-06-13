@@ -25,10 +25,12 @@ jobs:
       - run: npm run build:ui
       - name: unit test api
         run: npm test
+      - name: start test server
+        run: |
+          npm run start-test &&
+          while ! echo exit | nc localhost 3001; do sleep 10; done
       - name: unit test frontend
-        command: npm run test:frontend
-        start: npm run start-test
-        wait-on: http://localhost:3001
+        run: npm run test:frontend
       - name: e2e tests
         uses: cypress-io/github-action@v5
         with: 
