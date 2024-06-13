@@ -24,7 +24,7 @@ jobs:
         run: npm run lint
       - run: npm run build:ui
       - name: unit test api
-        run: ə
+        run: |
           npm run start:test &
           while ! echo exit | nc localhost 3001; do sleep 10; done &&
           npm run test:api
