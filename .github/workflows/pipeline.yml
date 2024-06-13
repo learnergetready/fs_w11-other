@@ -30,7 +30,7 @@ jobs:
         run: |
           npm run start:test &
           while ! echo exit | nc localhost 3001; do sleep 10; done &
-          npm test
+          npm run test:frontend
       - name: e2e tests
         uses: cypress-io/github-action@v5
         with: 
