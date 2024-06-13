@@ -25,7 +25,7 @@ jobs:
       - run: npm run build:ui
       - name: start test server
         run: |
-          npm run start-test &&
+          npm run start:test &&
           while ! echo exit | nc localhost 3001; do sleep 10; done
       - name: unit test api
         run: npm run test:api
