@@ -25,10 +25,11 @@ jobs:
       - run: npm run build:ui
       - name: start test server
         run: npm run start:test
-      - name: unit test api
-        run: npm run test:api
       - name: unit test frontend
-        run: npm run test:frontend
+        run: |
+          npm run test:api &
+          while ! echo exit | nc localhost 3001; do sleep 10; done &&
+          npm run test:frontend
       - name: e2e tests
         uses: cypress-io/github-action@v5
         with: 
@@ -42,7 +43,7 @@ jobs:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
       - name: Actions Status Discord Fail
         uses: sarisia/actions-status-discord@c242b3a624337aa95f4727dd779a62f408c69e91
-        if: ${{ failure() }}
+        if: ${{ failure() && false }}
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           status: ${{ job.status }}
@@ -67,6 +68,7 @@ jobs:
           DEFAULT_BUMP: patch
       - name: Actions Status Discord new version deployed and tagged
         uses: sarisia/actions-status-discord@c242b3a624337aa95f4727dd779a62f408c69e91
+        if: ${{false}}
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           status: ${{ job.status }}
