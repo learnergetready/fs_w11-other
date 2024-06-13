@@ -23,12 +23,12 @@ jobs:
       - name: Check style
         run: npm run lint
       - run: npm run build:ui
-      - name: unit test api
-        run: npm run test:api
       - name: start test server
         run: |
           npm run start-test &&
           while ! echo exit | nc localhost 3001; do sleep 10; done
+      - name: unit test api
+        run: npm run test:api
       - name: unit test frontend
         run: npm run test:frontend
       - name: e2e tests
