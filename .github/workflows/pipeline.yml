@@ -26,11 +26,13 @@ jobs:
       - name: unit test api
         run: npm run test:api
       - name: unit test frontend
-        run: npm run start:test:both
+        run: npm run test:frontend
       - name: e2e tests
         uses: cypress-io/github-action@v5
         with: 
           command: npm run test:e2e
+          start: npm run start:test:both
+          wait-on: https://localhost:5173
       - name: deploy to fly.io
         if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message), '#skip')}}
         run: flyctl deploy --remote-only
