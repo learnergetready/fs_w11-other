@@ -24,12 +24,9 @@ jobs:
         run: npm run lint
       - run: npm run build:ui
       - name: unit test api
-        if: ${{false}}
         run: npm run test:api
       - name: unit test frontend
-        run: |
-          npm run start:test &
-          npm run test:frontend
+        run: npm run start:test:both
       - name: e2e tests
         uses: cypress-io/github-action@v5
         with: 
@@ -47,7 +44,7 @@ jobs:
           status: ${{ job.status }}
           content: |
             Hey <@1237058905708953711>! A Monorepo-program build failed just now.
-            [Link to the commit](https://github.com/learnergetready/fs_w11-pokedex/commit/${{ github.sha }})
+            [Link to the commit](https://github.com/learnergetready/fs_w11-other/commit/${{ github.sha }})
   tag_release:
     if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message), '#skip') }}
     needs: [simple_deployment_pipeline]
@@ -73,4 +70,4 @@ jobs:
           content: |
             Hey <@1237058905708953711>! A new version of Monorepo-program got deployed succesfully.
             It was a `${{ steps.tagging.outputs.part }}` update to version `${{steps.tagging.outputs.new_tag}}`
-            [Link to the commit](https://github.com/learnergetready/fs_w11-pokedex/commit/${{ github.sha }})
+            [Link to the commit](https://github.com/learnergetready/fs_w11-other/commit/${{ github.sha }})

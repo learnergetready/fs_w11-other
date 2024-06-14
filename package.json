@@ -7,20 +7,24 @@
     "bloglist-frontend"
   ],
   "scripts": {
-    "test:api": "NODE_ENV=test jest --verbose --runInBand -- tests_for_api",
-    "dev": "NODE_ENV=development nodemon index.js",
-    "build:ui": "rm -rf dist && cd bloglist-frontend/ && npm run build && cp -r dist ..",
+    "test:api": "NODE_ENV=test jest --runInBand -- tests_for_api",
+    "dev:backend": "NODE_ENV=development nodemon index.js",
+    "build:ui": "rm -rf dist && cd bloglist-frontend/ && npm run build:dev && cp -r dist ..",
     "start": "NODE_ENV=production node index.js",
     "lint": "eslint .",
     "start:test": "NODE_ENV=test node index.js",
     "test:e2e": "cd bloglist-frontend/ && npm run test:e2e",
     "test:frontend": "cd bloglist-frontend/ && npm run test",
-    "deploy": "npm run build:ui && fly deploy"
+    "deploy": "npm run build:ui && fly deploy",
+    "dev:frontend": "npm run dev --prefix bloglist-frontend",
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "start:test:both": "concurrently \"npm run dev:frontend\" \"npm run start:test\""
   },
   "author": "Learner Getready",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "concurrently": "^8.2.2",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",

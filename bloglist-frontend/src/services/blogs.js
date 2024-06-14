@@ -4,6 +4,7 @@ const baseUrl = import.meta.env.MODE === 'production'
   ? 'https://bloglist-for-cicd-fs-learnergit.fly.dev/api/blogs'
   : 'http://localhost:3001/api/blogs'
 
+console.log(import.meta.env.MODE)
 let token = null
 
 const setToken = newToken => {

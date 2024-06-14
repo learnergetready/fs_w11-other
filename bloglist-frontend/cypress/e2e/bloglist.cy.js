@@ -21,7 +21,7 @@ describe('Blog app', function() {
     cy.request('POST', 'http://localhost:3001/api/testing/reset')
     cy.request('POST', 'http://localhost:3001/api/users/', user)
     cy.request('POST', 'http://localhost:3001/api/users/', user2)
-    cy.visit('http://localhost:3001')
+    cy.visit('http://localhost:5173')
   })
 
   it('Login form is shown', function() {
@@ -140,7 +140,7 @@ describe('Blog app', function() {
       describe('And logged in with as a different user', function() {
         beforeEach(function(){
           cy.get('[data-cy="log out"]').click()
-          cy.visit('http://localhost:3001')
+          cy.visit('http://localhost:5173')
 
           cy.get('[data-cy="username"]').type(user2.username)
           cy.get('[data-cy="password"]').type(user2.password)
